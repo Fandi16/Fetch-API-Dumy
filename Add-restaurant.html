@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Restaurant</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+            integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+
+    <body>
+        <header>
+            <div class="app-bar">
+                <div class="app-bar__menu" id="menu">
+                    <button id="hamburgerButton">☰</button>
+                </div>
+
+                <div class="app-bar__brand">
+                    <h1>Restaurant</h1>
+                </div>
+
+                <nav id="drawer" class="bar-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurant.html">Restaurant</a></li>
+                        <li><a href="#">ADD</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <h1 class="add">Add New Restaurant</h1>
+
+            <form id="addRestaurantForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea><br>
+
+                <label for="pictureId">Picture URL: (gambar harus berupa link)</label>
+                <input type="text" id="pictureId" name="pictureId" required><br>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required><br>
+
+                <label for="rating">Rating:</label>
+                <input type="number" id="rating" name="rating" step="0.1" min="0" max="5" required><br>
+
+                <button type="button" onclick="addNewRestaurant()">Add Restaurant</button>
+            </form>
+
+        </main>
+        <footer>
+            <section class="footer">
+
+                <div class="box-container">
+
+                    <div class="box">
+                        <h3>Link Utama</h3>
+                        <a href="index.html"> <i class="fas fa-angle-right"></i> Home</a>
+                        <a href="restaurant.html"> <i class="fas fa-angle-right"></i> Restaurant</a>
+                        <a href="#"> <i class="fas fa-angle-right"></i> ADD</a>
+                    </div>
+
+                    <div class="box">
+                        <h3>Info Kontak</h3>
+                        <a href="#"> <i class="fas fa-phone"></i> +62811112225</a>
+                        <a href="#"> <i class="fas fa-phone"></i> +62851111222 </a>
+                        <a href="#"> <i class="fas fa-envelope"></i> Restaurant@gmail.com </a>
+                        <a href="#"> <i class="fas fa-map"></i>Indonesia</a>
+                    </div>
+
+                    <div class="box">
+                        <h3>Follow Kami</h3>
+                        <a href="https://facebook.com/"> <i class="fab fa-facebook-f"></i> facebook </a>
+                        <a href="https://twitter.com/"> <i class="fab fa-twitter"></i> twitter </a>
+                        <a href="https://www.instagram.com/"> <i class="fab fa-instagram"></i> instagram </a>
+                        <a href="https://www.linkedin.com/"> <i class="fab fa-linkedin"></i> linkedin </a>
+                    </div>
+
+                </div>
+
+                <div class="credit"> Copyright <span>Faisa Syahla (20670008) Sheila Intan Ariansyah (20670152)</span>
+                    2024 </div>
+            </section>
+        </footer>
+
+    </body>
+    <script>
+        const hamburgerButtonElement = document.querySelector( '#hamburgerButton' );
+        const drawerElement = document.querySelector( '#drawer' );
+        const mainElement = document.querySelector( '.menu' );
+
+        hamburgerButtonElement.addEventListener( 'click', ( event ) =>
+        {
+            drawerElement.classList.toggle( 'open' );
+            event.stopPropagation();
+        } );
+
+        mainElement.addEventListener( 'click', ( event ) =>
+        {
+            drawerElement.classList.remove( 'open' );
+            event.stopPropagation();
+        } );
+    </script>
+
+
+    <!-- menambahkan data yg ada di api  -->
+    <script>
+        function addNewRestaurant ()
+        {
+            const formElement = document.getElementById( 'addRestaurantForm' );
+            const formData = new FormData( formElement );
+
+            fetch( 'https://65903441cbf74b575eca997c.mockapi.io/myAPI/v1/restaurant', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( Object.fromEntries( formData ) ),
+            } )
+                .then( response => response.json() )
+                .then( data =>
+                {
+                    alert( 'Restaurant added successfully!' );
+                    // You can redirect or handle the response as needed
+                    console.log( data );
+                } )
+                .catch( error =>
+                {
+                    console.error( 'Error adding restaurant:', error );
+                } );
+        }
+    </script>
+
+</html>

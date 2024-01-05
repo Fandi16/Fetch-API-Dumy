@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Restaurant</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+            integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+
+    <body>
+        <header>
+            <div class="app-bar">
+                <div class="app-bar__menu" id="menu">
+                    <button id="hamburgerButton">☰</button>
+                </div>
+
+                <div class="app-bar__brand">
+                    <h1>Restaurant</h1>
+                </div>
+
+                <nav id="drawer" class="bar-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">Restaurant</a></li>
+                        <li><a href="Add-restaurant.html">ADD</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+
+        <main>
+            <div id="restaurantData"></div>
+        </main>
+
+        <footer>
+            <section class="footer">
+
+                <div class="box-container">
+
+                    <div class="box">
+                        <h3>Link Utama</h3>
+                        <a href="index.html"> <i class="fas fa-angle-right"></i> Home</a>
+                        <a href="#"> <i class="fas fa-angle-right"></i> Restaurant</a>
+                        <a href="Add-restaurant.html"> <i class="fas fa-angle-right"></i> ADD</a>
+                    </div>
+
+                    <div class="box">
+                        <h3>Info Kontak</h3>
+                        <a href="#"> <i class="fas fa-phone"></i> +62811112225</a>
+                        <a href="#"> <i class="fas fa-phone"></i> +62851111222 </a>
+                        <a href="#"> <i class="fas fa-envelope"></i> Restaurant@gmail.com </a>
+                        <a href="#"> <i class="fas fa-map"></i>Indonesia</a>
+                    </div>
+
+                    <div class="box">
+                        <h3>Follow Kami</h3>
+                        <a href="https://facebook.com/"> <i class="fab fa-facebook-f"></i> facebook </a>
+                        <a href="https://twitter.com/"> <i class="fab fa-twitter"></i> twitter </a>
+                        <a href="https://www.instagram.com/"> <i class="fab fa-instagram"></i> instagram </a>
+                        <a href="https://www.linkedin.com/"> <i class="fab fa-linkedin"></i> linkedin </a>
+                    </div>
+
+                </div>
+
+                <div class="credit"> Copyright <span>Faisa Syahla (20670008) Sheila Intan Ariansyah (20670152)</span>
+                    2024 </div>
+            </section>
+        </footer>
+
+    </body>
+    <script>
+        const hamburgerButtonElement = document.querySelector( '#hamburgerButton' );
+        const drawerElement = document.querySelector( '#drawer' );
+        const mainElement = document.querySelector( '.menu' );
+
+        hamburgerButtonElement.addEventListener( 'click', ( event ) =>
+        {
+            drawerElement.classList.toggle( 'open' );
+            event.stopPropagation();
+        } );
+
+        mainElement.addEventListener( 'click', ( event ) =>
+        {
+            drawerElement.classList.remove( 'open' );
+            event.stopPropagation();
+        } );
+    </script>
+
+
+    <!-- menampilkan data yg ada di api  -->
+    <script>
+
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            fetch( 'https://65903441cbf74b575eca997c.mockapi.io/myAPI/v1/restaurant' )
+                .then( response => response.json() )
+                .then( data =>
+                {
+                    // Handle the data here
+                    displayRestaurantData( data );
+                } )
+                .catch( error =>
+                {
+                    console.error( 'Error fetching data:', error );
+                } );
+        } );
+
+        function displayRestaurantData ( data )
+        {
+            const restaurantDataElement = document.getElementById( 'restaurantData' );
+            let html = '<div class="list-restaurant">';
+
+            data.forEach( restaurant =>
+            {
+                html += `
+                    <div class="card">
+                    <img src="${ restaurant.pictureId }" alt="${ restaurant.name || '-' }" title="${ restaurant.name || '-' }">
+                    <div class="kota">${ restaurant.city }</div>
+                    <div class="card_content">
+                    <p class="card_rating">
+                        Rating : 
+                        <a href="#" class="card_rating_number">${ restaurant.rating }</a>
+                    </p>
+                    <h1 class="card_title"><a href="/#/detail/${ restaurant.id }">${ restaurant.name || '-' }</a></h1>
+                    <div class="card_desc">${ restaurant.description }...</div>
+                    </div>
+                    </div>
+                    `;
+            } );
+
+            html += '</div>';
+            restaurantDataElement.innerHTML = html;
+        }
+    </script>
+
+</html>
